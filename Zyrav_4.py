@@ -4,16 +4,16 @@ from random import randint
 
 base_Zyrav = 'Zyr_4_base.db'
 
-# con = sqlite3.connect(base_Zyrav)   # создание таблицы
-# cursor = con.cursor()
-# cursor.execute('''
-# CREATE TABLE IF NOT EXISTS 'shawerma' (
-# id INTEGER PRIMARY KEY,
-# name TEXT NOT NULL,
-# meat TEXT NOT NULL,
-# bread TEXT NOT NULL
-# )
-# ''')
+con = sqlite3.connect(base_Zyrav)   # создание таблицы
+cursor = con.cursor()
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS 'shawerma' (
+id INTEGER PRIMARY KEY,
+name TEXT NOT NULL,
+meat TEXT NOT NULL,
+bread TEXT NOT NULL
+)
+''')
 
 
 table_shaverma = 'shawerma'
@@ -81,32 +81,32 @@ def add_name_to_shav(base, table, name_add, meat_add, bread_add):  # добав�
 
 
 
-con = sqlite3.connect(base_Zyrav)
-cursor = con.cursor()
+# con = sqlite3.connect(base_Zyrav)
+# cursor = con.cursor()
 # cursor.execute(f"ALTER TABLE {table_shaverma} ADD ready int NOT NULL DEFAULT 0 ")  #  столбец для отображения выполненных и невыполненных заказов
 # con.commit()
-cursor.execute(f'SELECT * FROM {table_shaverma}')
-x = cursor.fetchall()
+# cursor.execute(f'SELECT * FROM {table_shaverma}')
+# x = cursor.fetchall()
 
 # for row in range(len(x)):  
 #     num = random.randint(0, 1)
 #     cursor.execute(f"UPDATE {table_shaverma} SET ready = {num} WHERE id = {row}") # рандомное заполнение столбца 
 #     con.commit()
 
-cursor.execute(f"SELECT ready, COUNT(*) FROM {table_shaverma} GROUP BY ready ORDER BY ready ") # количестово выполненных и невыполненных заказов
-x = cursor.fetchall()
+# cursor.execute(f"SELECT ready, COUNT(*) FROM {table_shaverma} GROUP BY ready ORDER BY ready ") # количестово выполненных и невыполненных заказов
+# x = cursor.fetchall()
 # if len(x) > 0:
 #     result = {0: 'не выполнено', 1: 'выполнено'}
 #     for i in x:
 #         print('Заказов', result[i[0]], i[1]) # выводит гоовность и количество заказов
 
 
-cursor.execute(f"DELETE FROM {table_shaverma} WHERE ready = 1") # удаление выполненных заказов
+# cursor.execute(f"DELETE FROM {table_shaverma} WHERE ready = 1") # удаление выполненных заказов
 
 
-con.commit()
-cursor.close()
-con.close()
+# con.commit()
+# cursor.close()
+# con.close()
 
 
 
