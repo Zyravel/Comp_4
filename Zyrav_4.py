@@ -1,21 +1,8 @@
 import sqlite3
-from random import randint
+import random
 
 
 base_Zyrav = 'Zyr_4_base.db'
-
-con = sqlite3.connect(base_Zyrav)   # создание таблицы
-cursor = con.cursor()
-cursor.execute('''
-CREATE TABLE IF NOT EXISTS 'shawerma' (
-id INTEGER PRIMARY KEY,
-name TEXT NOT NULL,
-meat TEXT NOT NULL,
-bread TEXT NOT NULL
-)
-''')
-
-
 table_shaverma = 'shawerma'
 
 
@@ -37,8 +24,9 @@ def show_all(base, table):  # выводит все записи
         con.close()
 
 
-def show_one(base, table, name_input):  # выводит одну запись по имени
+def show_one(base, table):  # выводит одну запись по имени
     try:
+        name_input = input('введите название навермы: ' ).capitalize()
         con = sqlite3.connect(base)
         cursor = con.cursor()
         cursor.execute(f'SELECT * FROM {table} where name = "{name_input}"')
@@ -47,51 +35,62 @@ def show_one(base, table, name_input):  # выводит одну запись �
             print(f"Найдено name: {result[1]}, meat: {result[2]}, bread: {result[3]}")
         else:
             print("Название не найдено")
-    # except:
-        # print("Что-то не так(((")
+    except:
+        print("Что-то не так(((")
     finally:
         cursor.close()
         con.close()
 
 
-def add_name_to_shav(base, table, name_add, meat_add, bread_add):  # добавляет новую запись
-        try:
-            con = sqlite3.connect(base)
-            cursor = con.cursor()
-            cursor.execute(f"INSERT INTO {table}(name, meat, bread) VALUES ('{name_add.capitalize()}', '{meat_add.lower()}', '{bread_add.lower()}')")
-            con.commit()
-        except:
-            print("Что-то не то(((")
-        finally:
-            cursor.close()
-            con.close()
+def add_name_to_shav(base, table):  # добавляет новую запись
+    try:
+        name_add = input("введите название новой шавермы: ").capitalize()
+        meat_add = input("введите мясную составляющую: ").lower()
+        bread_add = input("введназвание сдобную составляющую : ").lower()
+
+        con = sqlite3.connect(base)
+        cursor = con.cursor()
+        cursor.execute(f"INSERT INTO {table}(name, meat, bread) VALUES ('{name_add}', '{meat_add}', '{bread_add}')")
+        con.commit()
+    except:
+        print("Что-то не то(((")
+    finally:
+        cursor.close()
+        con.close()
 
 
+con = sqlite3.connect(base_Zyrav)   
+cursor = con.cursor()
+# cursor.execute(f'''CREATE TABLE IF NOT EXISTS {table_shaverma} (
+# id INTEGER PRIMARY KEY,
+# name TEXT UNIQUE NOT NULL,
+# meat TEXT NOT NULL,
+# bread TEXT NOT NULL
+# )''')   # создание таблицы шаверма
 
 
-# show_all(base_Zyrav, table_shaverma) # пример работы функции по выводу всех записей
-
-# name_input = input('введите название навермы: ' ).capitalize()  # пример вывода информации по имени
-# show_one(base_Zyrav, table_shaverma, name_input) 
-
-# name_input = input("введите название новой шавермы: ")
-# meat_input = input("введите мясную составляющую: ")
-# bread_input = input("введназвание сдобную составляющую : ")
-# add_name_to_shav(base_Zyrav, table_shaverma, name_input, meat_input, bread_input) # пример добавления новой шавермы
+# cursor.execute(f"INSERT INTO {table_shaverma}(name, meat, bread) VALUES ('Классика', 'курица', 'лаваш')") # тестовое заполнение таблицы
+# cursor.execute(f"INSERT INTO {table_shaverma}(name, meat, bread) VALUES ('Хот-дог', 'сосиски', 'пита')")
+# cursor.execute(f"INSERT INTO {table_shaverma}(name, meat, bread) VALUES ('Кебаб-ролл', 'кебаб', 'лаваш')")
 
 
+# add_name_to_shav(base_Zyrav, table_shaverma) # добавление новой записи
+# show_all(base_Zyrav, table_shaverma) # вывод всех записей
+# show_one(base_Zyrav, table_shaverma) # вывод информации по имени
 
-# con = sqlite3.connect(base_Zyrav)
-# cursor = con.cursor()
-# cursor.execute(f"ALTER TABLE {table_shaverma} ADD ready int NOT NULL DEFAULT 0 ")  #  столбец для отображения выполненных и невыполненных заказов
-# con.commit()
-# cursor.execute(f'SELECT * FROM {table_shaverma}')
-# x = cursor.fetchall()
 
-# for row in range(len(x)):  
-#     num = random.randint(0, 1)
-#     cursor.execute(f"UPDATE {table_shaverma} SET ready = {num} WHERE id = {row}") # рандомное заполнение столбца 
+# try:
+#     cursor.execute(f"ALTER TABLE {table_shaverma} ADD ready int NOT NULL DEFAULT 0 ")  #  столбец для отображения выполненных и невыполненных заказов
 #     con.commit()
+#     cursor.execute(f'SELECT * FROM {table_shaverma}')
+#     x = cursor.fetchall()
+#     for row in range(len(x)):  
+#         num = random.randint(0, 1)
+#         cursor.execute(f"UPDATE {table_shaverma} SET ready = {num} WHERE id = {row}") # рандомное заполнение столбца 
+#         con.commit()
+# except:
+#     print("Что-то не то(((")
+
 
 # cursor.execute(f"SELECT ready, COUNT(*) FROM {table_shaverma} GROUP BY ready ORDER BY ready ") # количестово выполненных и невыполненных заказов
 # x = cursor.fetchall()
@@ -103,10 +102,9 @@ def add_name_to_shav(base, table, name_add, meat_add, bread_add):  # добав�
 
 # cursor.execute(f"DELETE FROM {table_shaverma} WHERE ready = 1") # удаление выполненных заказов
 
-
-# con.commit()
-# cursor.close()
-# con.close()
+con.commit()
+cursor.close()
+con.close()
 
 
 
